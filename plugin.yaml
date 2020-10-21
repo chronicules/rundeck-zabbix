@@ -1,0 +1,44 @@
+name: zabbix-client-plugin
+version: 1.0
+rundeckPluginVersion: 1.0
+author: Dmitry Vasilyev
+date: 2020-01-16
+providers:
+  - name: zabbix-client-monitoring
+    title: Zabbix Client Monitoring
+    description: Disable or Enable monitoring on Zabbix Server
+    service: WorkflowNodeStep
+    plugin-type: script
+    script-interpreter: python3 -u
+    script-file: zabbix-client.py
+    script-args: ${node.name}
+    config:
+      - type: Select
+        name: state
+        title: Monitoring State
+        description: Monitoring State
+        default: enabled
+        values:
+          - enabled
+          - disabled
+        required: true
+      - type: String
+        name: username
+        title: Username
+        description: Zabbix API username
+        required: true
+        renderingOptions:
+          groupName: Authentication
+          grouping: secondary
+      - type: String
+        name: password
+        title: Password
+        description: Zabbix API password
+        required: true
+        renderingOptions:
+          groupName: Authentication
+          grouping: secondary
+          displayType: PASSWORD
+          selectionAccessor: "STORAGE_PATH"
+          valueConversion: "STORAGE_PATH_AUTOMATIC_READ"
+          storage-path-root: "keys"
